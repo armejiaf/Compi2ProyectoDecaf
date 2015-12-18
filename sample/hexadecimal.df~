@@ -1,0 +1,20 @@
+class Hexa
+{
+	int x, y;
+	void main()
+	{
+		x = 0x0A;
+		y = 0x0A;
+		y = MultSameNumber(y);
+		sum(MultSameNumber(x),y); 
+	}
+
+	void sum(int n, int n1)
+	{
+		print "Suma: ",n + n1;
+	}
+	int MultSameNumber(int n)
+	{
+		return n*n;
+	}
+}

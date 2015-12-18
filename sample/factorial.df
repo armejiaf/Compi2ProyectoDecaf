@@ -1,0 +1,22 @@
+class Factorial
+{
+	int x,num;
+	void main()
+	{
+		print 'h','e','l','l','o';
+		//print "Ingrese numero: ";
+		//read num;
+		num = 5;
+		x = factorial(num);
+		print "Factorial: ",x;	
+	}
+
+	int factorial(int n)
+	{
+		if (n == 0) {
+			return (1);
+		} else {
+			return n * factorial(n-1);
+		}
+	}
+}

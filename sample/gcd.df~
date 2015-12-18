@@ -1,0 +1,26 @@
+class GreatestCommonDivisor
+{
+	int aaaaa = 10;
+	int bbbbb1 = 20;
+	int x, y, z;
+	
+	void main()
+	{
+		x = a;
+		y = b;
+		print x,y;
+		z = gcd(x, y);
+
+		print z;
+	}
+
+	// Funcion que calcula el maximo comun divisor
+	int gcd(int a, int b)
+	{
+		if (b == 0) {
+			return (a);
+		} else {
+			return (gcd(b, a % b));
+		}
+	}
+}

@@ -1,0 +1,27 @@
+class test_if
+{
+	int x = 15;
+	int y; 
+	
+	void main()
+	{
+		read x;
+		x = x - 3;
+		y = (x*10)/5;
+		if (x>10)
+		{
+			print "x_es_mayor_a_10 ", x;
+		}
+		else
+		{
+		 	if (x>7)
+			{ 
+        			print "x_es_mayor_a_7_pero_menor_que_10 ", x;
+			}else
+			{
+				print "x_es_menor_que_7";
+			}
+		}	    	
+		
+	}
+}

@@ -1,0 +1,18 @@
+class Shift
+{
+	int x,y;
+	void main()
+	{
+		//Deberia dar 32
+		x = 2 << 4;
+		//Deberia dar 2
+		y = 32 >> 4;
+		print x,y;
+		//Deberia dar 8
+		x = 2 rot 2 ;
+		print x;
+				
+	}
+
+	
+}

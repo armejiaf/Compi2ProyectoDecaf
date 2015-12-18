@@ -1,0 +1,18 @@
+class Indices
+{
+	int i[3],j;
+	bool k[3];
+	void main()
+	{
+		for(j=0;j<3;j=j+1)
+		{
+			i[j]=5*j;
+			k[j]=true;
+                }
+		for(j=0;j<3;j=j+1)
+		{
+			print i[j];
+                }
+	}
+
+}

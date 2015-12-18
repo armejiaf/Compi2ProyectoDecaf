@@ -1,0 +1,3449 @@
+Terminals unused in grammar
+
+   KW_EXTENDS
+   KW_NEW
+   KW_NULL
+   OP_NOT
+
+
+State 5 conflicts: 2 shift/reduce
+State 9 conflicts: 2 shift/reduce
+
+
+Grammar
+
+    0 $accept: input $end
+
+    1 input: KW_CLASS ID '{' opt_field_decl opt_method_decl '}'
+
+    2 opt_field_decl: field_decls
+    3               | %empty
+
+    4 field_decls: field_decls field
+    5            | field
+
+    6 field: type id_list_global ';'
+    7      | type ID '=' constant ';'
+
+    8 id_list_global: id_list_global ',' id_decl_global
+    9               | id_decl_global
+
+   10 id_decl_global: ID
+   11               | ID '[' INT_CONSTANT ']'
+
+   12 opt_method_decl: method_decl
+   13                | %empty
+
+   14 method_decl: method_decl method
+   15            | method
+
+   16 method: type ID '(' opt_arg_list ')' block
+   17       | KW_VOID ID '(' opt_arg_list ')' block
+
+   18 opt_arg_list: arg_list
+   19             | %empty
+
+   20 arg_list: arg_list ',' arg
+   21         | arg
+
+   22 arg: type ID
+
+   23 block: '{' opt_var_decl opt_statements '}'
+
+   24 opt_var_decl: var_decls
+   25             | %empty
+
+   26 var_decls: var_decls var_decl
+   27          | var_decl
+
+   28 var_decl: type id_list_local ';'
+
+   29 id_list_local: id_list_local ',' ID
+   30              | ID
+
+   31 type: KW_INT
+   32     | KW_BOOL
+
+   33 opt_statements: statements
+   34               | %empty
+
+   35 statements: statements statement
+   36           | statement
+
+   37 statement: assign ';'
+   38          | method_call ';'
+   39          | KW_IF '(' expr ')' block opt_else
+   40          | KW_WHILE '(' expr ')' block
+   41          | KW_FOR '(' assign_list ';' expr ';' assign_list ')' block
+   42          | KW_RETURN opt_expr ';'
+   43          | KW_BREAK ';'
+   44          | KW_CONTINUE ';'
+   45          | block
+
+   46 assign_list: assign_list ',' assign
+   47            | assign
+
+   48 opt_else: KW_ELSE block
+   49         | %empty
+
+   50 opt_expr: expr
+   51         | %empty
+
+   52 assign: lvalue '=' expr
+
+   53 method_call: ID '(' opt_call_arg_list ')'
+   54            | KW_PRINT print_list
+   55            | KW_READ read_list
+
+   56 opt_call_arg_list: call_arg_list
+   57                  | %empty
+
+   58 call_arg_list: call_arg_list ',' expr
+   59              | expr
+
+   60 print_list: print_list ',' argument
+   61           | argument
+
+   62 read_list: read_list ',' lvalue
+   63          | lvalue
+
+   64 argument: STRING_CONSTANT
+   65         | expr
+
+   66 lvalue: ID opt_array
+
+   67 opt_array: '[' expr ']'
+   68          | %empty
+
+   69 expr: expr OP_OR expra
+   70     | expra
+
+   71 expra: expra OP_AND equality
+   72      | equality
+
+   73 equality: equality OP_EQ relational
+   74         | equality OP_NE relational
+   75         | relational
+
+   76 relational: relational OP_GT shift
+   77           | relational OP_LT shift
+   78           | relational OP_LTE shift
+   79           | relational OP_GTE shift
+   80           | shift
+
+   81 shift: shift OP_SHIFT_RIGHT module
+   82      | shift OP_SHIFT_LEFT module
+   83      | shift OP_ROT module
+   84      | module
+
+   85 module: module '%' expras
+   86       | expras
+
+   87 expras: expras '+' term
+   88       | expras '-' term
+   89       | term
+
+   90 term: term '*' factor
+   91     | term '/' factor
+   92     | factor
+
+   93 factor: '-' factor
+   94       | '!' factor
+   95       | lvalue
+   96       | ID '(' opt_call_arg_list ')'
+   97       | constant
+   98       | '(' expr ')'
+
+   99 constant: INT_CONSTANT
+  100         | CHAR_CONSTANT
+  101         | bool_constant
+
+  102 bool_constant: KW_TRUE
+  103              | KW_FALSE
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'!' (33) 94
+'%' (37) 85
+'(' (40) 16 17 39 40 41 53 96 98
+')' (41) 16 17 39 40 41 53 96 98
+'*' (42) 90
+'+' (43) 87
+',' (44) 8 20 29 46 58 60 62
+'-' (45) 88 93
+'/' (47) 91
+';' (59) 6 7 28 37 38 41 42 43 44
+'=' (61) 7 52
+'[' (91) 11 67
+']' (93) 11 67
+'{' (123) 1 23
+'}' (125) 1 23
+error (256)
+INT_CONSTANT (258) 11 99
+CHAR_CONSTANT (259) 100
+ID (260) 1 7 10 11 16 17 22 29 30 53 66 96
+STRING_CONSTANT (261) 64
+KW_CLASS (262) 1
+KW_BREAK (263) 43
+KW_READ (264) 55
+KW_PRINT (265) 54
+KW_CONTINUE (266) 44
+KW_EXTENDS (267)
+KW_ELSE (268) 48
+KW_WHILE (269) 40
+KW_FOR (270) 41
+KW_IF (271) 39
+KW_INT (272) 31
+KW_NEW (273)
+KW_NULL (274)
+KW_RETURN (275) 42
+KW_TRUE (276) 102
+KW_FALSE (277) 103
+KW_VOID (278) 17
+KW_BOOL (279) 32
+OP_LT (280) 77
+OP_GT (281) 76
+OP_LTE (282) 78
+OP_GTE (283) 79
+OP_NE (284) 74
+OP_EQ (285) 73
+OP_ROT (286) 83
+OP_NOT (287)
+OP_OR (288) 69
+OP_AND (289) 71
+OP_SHIFT_LEFT (290) 82
+OP_SHIFT_RIGHT (291) 81
+
+
+Nonterminals, with rules where they appear
+
+$accept (52)
+    on left: 0
+input (53)
+    on left: 1, on right: 0
+opt_field_decl (54)
+    on left: 2 3, on right: 1
+field_decls (55)
+    on left: 4 5, on right: 2 4
+field (56)
+    on left: 6 7, on right: 4 5
+id_list_global (57)
+    on left: 8 9, on right: 6 8
+id_decl_global (58)
+    on left: 10 11, on right: 8 9
+opt_method_decl (59)
+    on left: 12 13, on right: 1
+method_decl (60)
+    on left: 14 15, on right: 12 14
+method (61)
+    on left: 16 17, on right: 14 15
+opt_arg_list (62)
+    on left: 18 19, on right: 16 17
+arg_list (63)
+    on left: 20 21, on right: 18 20
+arg (64)
+    on left: 22, on right: 20 21
+block (65)
+    on left: 23, on right: 16 17 39 40 41 45 48
+opt_var_decl (66)
+    on left: 24 25, on right: 23
+var_decls (67)
+    on left: 26 27, on right: 24 26
+var_decl (68)
+    on left: 28, on right: 26 27
+id_list_local (69)
+    on left: 29 30, on right: 28 29
+type (70)
+    on left: 31 32, on right: 6 7 16 22 28
+opt_statements (71)
+    on left: 33 34, on right: 23
+statements (72)
+    on left: 35 36, on right: 33 35
+statement (73)
+    on left: 37 38 39 40 41 42 43 44 45, on right: 35 36
+assign_list (74)
+    on left: 46 47, on right: 41 46
+opt_else (75)
+    on left: 48 49, on right: 39
+opt_expr (76)
+    on left: 50 51, on right: 42
+assign (77)
+    on left: 52, on right: 37 46 47
+method_call (78)
+    on left: 53 54 55, on right: 38
+opt_call_arg_list (79)
+    on left: 56 57, on right: 53 96
+call_arg_list (80)
+    on left: 58 59, on right: 56 58
+print_list (81)
+    on left: 60 61, on right: 54 60
+read_list (82)
+    on left: 62 63, on right: 55 62
+argument (83)
+    on left: 64 65, on right: 60 61
+lvalue (84)
+    on left: 66, on right: 52 62 63 95
+opt_array (85)
+    on left: 67 68, on right: 66
+expr (86)
+    on left: 69 70, on right: 39 40 41 50 52 58 59 65 67 69 98
+expra (87)
+    on left: 71 72, on right: 69 70 71
+equality (88)
+    on left: 73 74 75, on right: 71 72 73 74
+relational (89)
+    on left: 76 77 78 79 80, on right: 73 74 75 76 77 78 79
+shift (90)
+    on left: 81 82 83 84, on right: 76 77 78 79 80 81 82 83
+module (91)
+    on left: 85 86, on right: 81 82 83 84 85
+expras (92)
+    on left: 87 88 89, on right: 85 86 87 88
+term (93)
+    on left: 90 91 92, on right: 87 88 89 90 91
+factor (94)
+    on left: 93 94 95 96 97 98, on right: 90 91 92 93 94
+constant (95)
+    on left: 99 100 101, on right: 7 97
+bool_constant (96)
+    on left: 102 103, on right: 101
+
+
+State 0
+
+    0 $accept: . input $end
+    1 input: . KW_CLASS ID '{' opt_field_decl opt_method_decl '}'
+
+    KW_CLASS  shift, and go to state 1
+
+    input  go to state 2
+
+
+State 1
+
+    1 input: KW_CLASS . ID '{' opt_field_decl opt_method_decl '}'
+
+    ID  shift, and go to state 3
+
+
+State 2
+
+    0 $accept: input . $end
+
+    $end  shift, and go to state 4
+
+
+State 3
+
+    1 input: KW_CLASS ID . '{' opt_field_decl opt_method_decl '}'
+
+    '{'  shift, and go to state 5
+
+
+State 4
+
+    0 $accept: input $end .
+
+    $default  accept
+
+
+State 5
+
+    1 input: KW_CLASS ID '{' . opt_field_decl opt_method_decl '}'
+    2 opt_field_decl: . field_decls
+    3               | . %empty  [KW_INT, KW_VOID, KW_BOOL, '}']
+    4 field_decls: . field_decls field
+    5            | . field
+    6 field: . type id_list_global ';'
+    7      | . type ID '=' constant ';'
+   31 type: . KW_INT
+   32     | . KW_BOOL
+
+    KW_INT   shift, and go to state 6
+    KW_BOOL  shift, and go to state 7
+
+    KW_INT    [reduce using rule 3 (opt_field_decl)]
+    KW_BOOL   [reduce using rule 3 (opt_field_decl)]
+    $default  reduce using rule 3 (opt_field_decl)
+
+    opt_field_decl  go to state 8
+    field_decls     go to state 9
+    field           go to state 10
+    type            go to state 11
+
+
+State 6
+
+   31 type: KW_INT .
+
+    $default  reduce using rule 31 (type)
+
+
+State 7
+
+   32 type: KW_BOOL .
+
+    $default  reduce using rule 32 (type)
+
+
+State 8
+
+    1 input: KW_CLASS ID '{' opt_field_decl . opt_method_decl '}'
+   12 opt_method_decl: . method_decl
+   13                | . %empty  ['}']
+   14 method_decl: . method_decl method
+   15            | . method
+   16 method: . type ID '(' opt_arg_list ')' block
+   17       | . KW_VOID ID '(' opt_arg_list ')' block
+   31 type: . KW_INT
+   32     | . KW_BOOL
+
+    KW_INT   shift, and go to state 6
+    KW_VOID  shift, and go to state 12
+    KW_BOOL  shift, and go to state 7
+
+    $default  reduce using rule 13 (opt_method_decl)
+
+    opt_method_decl  go to state 13
+    method_decl      go to state 14
+    method           go to state 15
+    type             go to state 16
+
+
+State 9
+
+    2 opt_field_decl: field_decls .  [KW_INT, KW_VOID, KW_BOOL, '}']
+    4 field_decls: field_decls . field
+    6 field: . type id_list_global ';'
+    7      | . type ID '=' constant ';'
+   31 type: . KW_INT
+   32     | . KW_BOOL
+
+    KW_INT   shift, and go to state 6
+    KW_BOOL  shift, and go to state 7
+
+    KW_INT    [reduce using rule 2 (opt_field_decl)]
+    KW_BOOL   [reduce using rule 2 (opt_field_decl)]
+    $default  reduce using rule 2 (opt_field_decl)
+
+    field  go to state 17
+    type   go to state 11
+
+
+State 10
+
+    5 field_decls: field .
+
+    $default  reduce using rule 5 (field_decls)
+
+
+State 11
+
+    6 field: type . id_list_global ';'
+    7      | type . ID '=' constant ';'
+    8 id_list_global: . id_list_global ',' id_decl_global
+    9               | . id_decl_global
+   10 id_decl_global: . ID
+   11               | . ID '[' INT_CONSTANT ']'
+
+    ID  shift, and go to state 18
+
+    id_list_global  go to state 19
+    id_decl_global  go to state 20
+
+
+State 12
+
+   17 method: KW_VOID . ID '(' opt_arg_list ')' block
+
+    ID  shift, and go to state 21
+
+
+State 13
+
+    1 input: KW_CLASS ID '{' opt_field_decl opt_method_decl . '}'
+
+    '}'  shift, and go to state 22
+
+
+State 14
+
+   12 opt_method_decl: method_decl .  ['}']
+   14 method_decl: method_decl . method
+   16 method: . type ID '(' opt_arg_list ')' block
+   17       | . KW_VOID ID '(' opt_arg_list ')' block
+   31 type: . KW_INT
+   32     | . KW_BOOL
+
+    KW_INT   shift, and go to state 6
+    KW_VOID  shift, and go to state 12
+    KW_BOOL  shift, and go to state 7
+
+    $default  reduce using rule 12 (opt_method_decl)
+
+    method  go to state 23
+    type    go to state 16
+
+
+State 15
+
+   15 method_decl: method .
+
+    $default  reduce using rule 15 (method_decl)
+
+
+State 16
+
+   16 method: type . ID '(' opt_arg_list ')' block
+
+    ID  shift, and go to state 24
+
+
+State 17
+
+    4 field_decls: field_decls field .
+
+    $default  reduce using rule 4 (field_decls)
+
+
+State 18
+
+    7 field: type ID . '=' constant ';'
+   10 id_decl_global: ID .  [';', ',']
+   11               | ID . '[' INT_CONSTANT ']'
+
+    '='  shift, and go to state 25
+    '['  shift, and go to state 26
+
+    $default  reduce using rule 10 (id_decl_global)
+
+
+State 19
+
+    6 field: type id_list_global . ';'
+    8 id_list_global: id_list_global . ',' id_decl_global
+
+    ';'  shift, and go to state 27
+    ','  shift, and go to state 28
+
+
+State 20
+
+    9 id_list_global: id_decl_global .
+
+    $default  reduce using rule 9 (id_list_global)
+
+
+State 21
+
+   17 method: KW_VOID ID . '(' opt_arg_list ')' block
+
+    '('  shift, and go to state 29
+
+
+State 22
+
+    1 input: KW_CLASS ID '{' opt_field_decl opt_method_decl '}' .
+
+    $default  reduce using rule 1 (input)
+
+
+State 23
+
+   14 method_decl: method_decl method .
+
+    $default  reduce using rule 14 (method_decl)
+
+
+State 24
+
+   16 method: type ID . '(' opt_arg_list ')' block
+
+    '('  shift, and go to state 30
+
+
+State 25
+
+    7 field: type ID '=' . constant ';'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+
+    constant       go to state 35
+    bool_constant  go to state 36
+
+
+State 26
+
+   11 id_decl_global: ID '[' . INT_CONSTANT ']'
+
+    INT_CONSTANT  shift, and go to state 37
+
+
+State 27
+
+    6 field: type id_list_global ';' .
+
+    $default  reduce using rule 6 (field)
+
+
+State 28
+
+    8 id_list_global: id_list_global ',' . id_decl_global
+   10 id_decl_global: . ID
+   11               | . ID '[' INT_CONSTANT ']'
+
+    ID  shift, and go to state 38
+
+    id_decl_global  go to state 39
+
+
+State 29
+
+   17 method: KW_VOID ID '(' . opt_arg_list ')' block
+   18 opt_arg_list: . arg_list
+   19             | . %empty  [')']
+   20 arg_list: . arg_list ',' arg
+   21         | . arg
+   22 arg: . type ID
+   31 type: . KW_INT
+   32     | . KW_BOOL
+
+    KW_INT   shift, and go to state 6
+    KW_BOOL  shift, and go to state 7
+
+    $default  reduce using rule 19 (opt_arg_list)
+
+    opt_arg_list  go to state 40
+    arg_list      go to state 41
+    arg           go to state 42
+    type          go to state 43
+
+
+State 30
+
+   16 method: type ID '(' . opt_arg_list ')' block
+   18 opt_arg_list: . arg_list
+   19             | . %empty  [')']
+   20 arg_list: . arg_list ',' arg
+   21         | . arg
+   22 arg: . type ID
+   31 type: . KW_INT
+   32     | . KW_BOOL
+
+    KW_INT   shift, and go to state 6
+    KW_BOOL  shift, and go to state 7
+
+    $default  reduce using rule 19 (opt_arg_list)
+
+    opt_arg_list  go to state 44
+    arg_list      go to state 41
+    arg           go to state 42
+    type          go to state 43
+
+
+State 31
+
+   99 constant: INT_CONSTANT .
+
+    $default  reduce using rule 99 (constant)
+
+
+State 32
+
+  100 constant: CHAR_CONSTANT .
+
+    $default  reduce using rule 100 (constant)
+
+
+State 33
+
+  102 bool_constant: KW_TRUE .
+
+    $default  reduce using rule 102 (bool_constant)
+
+
+State 34
+
+  103 bool_constant: KW_FALSE .
+
+    $default  reduce using rule 103 (bool_constant)
+
+
+State 35
+
+    7 field: type ID '=' constant . ';'
+
+    ';'  shift, and go to state 45
+
+
+State 36
+
+  101 constant: bool_constant .
+
+    $default  reduce using rule 101 (constant)
+
+
+State 37
+
+   11 id_decl_global: ID '[' INT_CONSTANT . ']'
+
+    ']'  shift, and go to state 46
+
+
+State 38
+
+   10 id_decl_global: ID .  [';', ',']
+   11               | ID . '[' INT_CONSTANT ']'
+
+    '['  shift, and go to state 26
+
+    $default  reduce using rule 10 (id_decl_global)
+
+
+State 39
+
+    8 id_list_global: id_list_global ',' id_decl_global .
+
+    $default  reduce using rule 8 (id_list_global)
+
+
+State 40
+
+   17 method: KW_VOID ID '(' opt_arg_list . ')' block
+
+    ')'  shift, and go to state 47
+
+
+State 41
+
+   18 opt_arg_list: arg_list .  [')']
+   20 arg_list: arg_list . ',' arg
+
+    ','  shift, and go to state 48
+
+    $default  reduce using rule 18 (opt_arg_list)
+
+
+State 42
+
+   21 arg_list: arg .
+
+    $default  reduce using rule 21 (arg_list)
+
+
+State 43
+
+   22 arg: type . ID
+
+    ID  shift, and go to state 49
+
+
+State 44
+
+   16 method: type ID '(' opt_arg_list . ')' block
+
+    ')'  shift, and go to state 50
+
+
+State 45
+
+    7 field: type ID '=' constant ';' .
+
+    $default  reduce using rule 7 (field)
+
+
+State 46
+
+   11 id_decl_global: ID '[' INT_CONSTANT ']' .
+
+    $default  reduce using rule 11 (id_decl_global)
+
+
+State 47
+
+   17 method: KW_VOID ID '(' opt_arg_list ')' . block
+   23 block: . '{' opt_var_decl opt_statements '}'
+
+    '{'  shift, and go to state 51
+
+    block  go to state 52
+
+
+State 48
+
+   20 arg_list: arg_list ',' . arg
+   22 arg: . type ID
+   31 type: . KW_INT
+   32     | . KW_BOOL
+
+    KW_INT   shift, and go to state 6
+    KW_BOOL  shift, and go to state 7
+
+    arg   go to state 53
+    type  go to state 43
+
+
+State 49
+
+   22 arg: type ID .
+
+    $default  reduce using rule 22 (arg)
+
+
+State 50
+
+   16 method: type ID '(' opt_arg_list ')' . block
+   23 block: . '{' opt_var_decl opt_statements '}'
+
+    '{'  shift, and go to state 51
+
+    block  go to state 54
+
+
+State 51
+
+   23 block: '{' . opt_var_decl opt_statements '}'
+   24 opt_var_decl: . var_decls
+   25             | . %empty  [ID, KW_BREAK, KW_READ, KW_PRINT, KW_CONTINUE, KW_WHILE, KW_FOR, KW_IF, KW_RETURN, '{', '}']
+   26 var_decls: . var_decls var_decl
+   27          | . var_decl
+   28 var_decl: . type id_list_local ';'
+   31 type: . KW_INT
+   32     | . KW_BOOL
+
+    KW_INT   shift, and go to state 6
+    KW_BOOL  shift, and go to state 7
+
+    $default  reduce using rule 25 (opt_var_decl)
+
+    opt_var_decl  go to state 55
+    var_decls     go to state 56
+    var_decl      go to state 57
+    type          go to state 58
+
+
+State 52
+
+   17 method: KW_VOID ID '(' opt_arg_list ')' block .
+
+    $default  reduce using rule 17 (method)
+
+
+State 53
+
+   20 arg_list: arg_list ',' arg .
+
+    $default  reduce using rule 20 (arg_list)
+
+
+State 54
+
+   16 method: type ID '(' opt_arg_list ')' block .
+
+    $default  reduce using rule 16 (method)
+
+
+State 55
+
+   23 block: . '{' opt_var_decl opt_statements '}'
+   23      | '{' opt_var_decl . opt_statements '}'
+   33 opt_statements: . statements
+   34               | . %empty  ['}']
+   35 statements: . statements statement
+   36           | . statement
+   37 statement: . assign ';'
+   38          | . method_call ';'
+   39          | . KW_IF '(' expr ')' block opt_else
+   40          | . KW_WHILE '(' expr ')' block
+   41          | . KW_FOR '(' assign_list ';' expr ';' assign_list ')' block
+   42          | . KW_RETURN opt_expr ';'
+   43          | . KW_BREAK ';'
+   44          | . KW_CONTINUE ';'
+   45          | . block
+   52 assign: . lvalue '=' expr
+   53 method_call: . ID '(' opt_call_arg_list ')'
+   54            | . KW_PRINT print_list
+   55            | . KW_READ read_list
+   66 lvalue: . ID opt_array
+
+    ID           shift, and go to state 59
+    KW_BREAK     shift, and go to state 60
+    KW_READ      shift, and go to state 61
+    KW_PRINT     shift, and go to state 62
+    KW_CONTINUE  shift, and go to state 63
+    KW_WHILE     shift, and go to state 64
+    KW_FOR       shift, and go to state 65
+    KW_IF        shift, and go to state 66
+    KW_RETURN    shift, and go to state 67
+    '{'          shift, and go to state 51
+
+    $default  reduce using rule 34 (opt_statements)
+
+    block           go to state 68
+    opt_statements  go to state 69
+    statements      go to state 70
+    statement       go to state 71
+    assign          go to state 72
+    method_call     go to state 73
+    lvalue          go to state 74
+
+
+State 56
+
+   24 opt_var_decl: var_decls .  [ID, KW_BREAK, KW_READ, KW_PRINT, KW_CONTINUE, KW_WHILE, KW_FOR, KW_IF, KW_RETURN, '{', '}']
+   26 var_decls: var_decls . var_decl
+   28 var_decl: . type id_list_local ';'
+   31 type: . KW_INT
+   32     | . KW_BOOL
+
+    KW_INT   shift, and go to state 6
+    KW_BOOL  shift, and go to state 7
+
+    $default  reduce using rule 24 (opt_var_decl)
+
+    var_decl  go to state 75
+    type      go to state 58
+
+
+State 57
+
+   27 var_decls: var_decl .
+
+    $default  reduce using rule 27 (var_decls)
+
+
+State 58
+
+   28 var_decl: type . id_list_local ';'
+   29 id_list_local: . id_list_local ',' ID
+   30              | . ID
+
+    ID  shift, and go to state 76
+
+    id_list_local  go to state 77
+
+
+State 59
+
+   53 method_call: ID . '(' opt_call_arg_list ')'
+   66 lvalue: ID . opt_array
+   67 opt_array: . '[' expr ']'
+   68          | . %empty  ['=']
+
+    '['  shift, and go to state 78
+    '('  shift, and go to state 79
+
+    $default  reduce using rule 68 (opt_array)
+
+    opt_array  go to state 80
+
+
+State 60
+
+   43 statement: KW_BREAK . ';'
+
+    ';'  shift, and go to state 81
+
+
+State 61
+
+   55 method_call: KW_READ . read_list
+   62 read_list: . read_list ',' lvalue
+   63          | . lvalue
+   66 lvalue: . ID opt_array
+
+    ID  shift, and go to state 82
+
+    read_list  go to state 83
+    lvalue     go to state 84
+
+
+State 62
+
+   54 method_call: KW_PRINT . print_list
+   60 print_list: . print_list ',' argument
+   61           | . argument
+   64 argument: . STRING_CONSTANT
+   65         | . expr
+   66 lvalue: . ID opt_array
+   69 expr: . expr OP_OR expra
+   70     | . expra
+   71 expra: . expra OP_AND equality
+   72      | . equality
+   73 equality: . equality OP_EQ relational
+   74         | . equality OP_NE relational
+   75         | . relational
+   76 relational: . relational OP_GT shift
+   77           | . relational OP_LT shift
+   78           | . relational OP_LTE shift
+   79           | . relational OP_GTE shift
+   80           | . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT     shift, and go to state 31
+    CHAR_CONSTANT    shift, and go to state 32
+    ID               shift, and go to state 85
+    STRING_CONSTANT  shift, and go to state 86
+    KW_TRUE          shift, and go to state 33
+    KW_FALSE         shift, and go to state 34
+    '('              shift, and go to state 87
+    '-'              shift, and go to state 88
+    '!'              shift, and go to state 89
+
+    print_list     go to state 90
+    argument       go to state 91
+    lvalue         go to state 92
+    expr           go to state 93
+    expra          go to state 94
+    equality       go to state 95
+    relational     go to state 96
+    shift          go to state 97
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 63
+
+   44 statement: KW_CONTINUE . ';'
+
+    ';'  shift, and go to state 103
+
+
+State 64
+
+   40 statement: KW_WHILE . '(' expr ')' block
+
+    '('  shift, and go to state 104
+
+
+State 65
+
+   41 statement: KW_FOR . '(' assign_list ';' expr ';' assign_list ')' block
+
+    '('  shift, and go to state 105
+
+
+State 66
+
+   39 statement: KW_IF . '(' expr ')' block opt_else
+
+    '('  shift, and go to state 106
+
+
+State 67
+
+   42 statement: KW_RETURN . opt_expr ';'
+   50 opt_expr: . expr
+   51         | . %empty  [';']
+   66 lvalue: . ID opt_array
+   69 expr: . expr OP_OR expra
+   70     | . expra
+   71 expra: . expra OP_AND equality
+   72      | . equality
+   73 equality: . equality OP_EQ relational
+   74         | . equality OP_NE relational
+   75         | . relational
+   76 relational: . relational OP_GT shift
+   77           | . relational OP_LT shift
+   78           | . relational OP_LTE shift
+   79           | . relational OP_GTE shift
+   80           | . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    $default  reduce using rule 51 (opt_expr)
+
+    opt_expr       go to state 107
+    lvalue         go to state 92
+    expr           go to state 108
+    expra          go to state 94
+    equality       go to state 95
+    relational     go to state 96
+    shift          go to state 97
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 68
+
+   45 statement: block .
+
+    $default  reduce using rule 45 (statement)
+
+
+State 69
+
+   23 block: '{' opt_var_decl opt_statements . '}'
+
+    '}'  shift, and go to state 109
+
+
+State 70
+
+   23 block: . '{' opt_var_decl opt_statements '}'
+   33 opt_statements: statements .  ['}']
+   35 statements: statements . statement
+   37 statement: . assign ';'
+   38          | . method_call ';'
+   39          | . KW_IF '(' expr ')' block opt_else
+   40          | . KW_WHILE '(' expr ')' block
+   41          | . KW_FOR '(' assign_list ';' expr ';' assign_list ')' block
+   42          | . KW_RETURN opt_expr ';'
+   43          | . KW_BREAK ';'
+   44          | . KW_CONTINUE ';'
+   45          | . block
+   52 assign: . lvalue '=' expr
+   53 method_call: . ID '(' opt_call_arg_list ')'
+   54            | . KW_PRINT print_list
+   55            | . KW_READ read_list
+   66 lvalue: . ID opt_array
+
+    ID           shift, and go to state 59
+    KW_BREAK     shift, and go to state 60
+    KW_READ      shift, and go to state 61
+    KW_PRINT     shift, and go to state 62
+    KW_CONTINUE  shift, and go to state 63
+    KW_WHILE     shift, and go to state 64
+    KW_FOR       shift, and go to state 65
+    KW_IF        shift, and go to state 66
+    KW_RETURN    shift, and go to state 67
+    '{'          shift, and go to state 51
+
+    $default  reduce using rule 33 (opt_statements)
+
+    block        go to state 68
+    statement    go to state 110
+    assign       go to state 72
+    method_call  go to state 73
+    lvalue       go to state 74
+
+
+State 71
+
+   36 statements: statement .
+
+    $default  reduce using rule 36 (statements)
+
+
+State 72
+
+   37 statement: assign . ';'
+
+    ';'  shift, and go to state 111
+
+
+State 73
+
+   38 statement: method_call . ';'
+
+    ';'  shift, and go to state 112
+
+
+State 74
+
+   52 assign: lvalue . '=' expr
+
+    '='  shift, and go to state 113
+
+
+State 75
+
+   26 var_decls: var_decls var_decl .
+
+    $default  reduce using rule 26 (var_decls)
+
+
+State 76
+
+   30 id_list_local: ID .
+
+    $default  reduce using rule 30 (id_list_local)
+
+
+State 77
+
+   28 var_decl: type id_list_local . ';'
+   29 id_list_local: id_list_local . ',' ID
+
+    ';'  shift, and go to state 114
+    ','  shift, and go to state 115
+
+
+State 78
+
+   66 lvalue: . ID opt_array
+   67 opt_array: '[' . expr ']'
+   69 expr: . expr OP_OR expra
+   70     | . expra
+   71 expra: . expra OP_AND equality
+   72      | . equality
+   73 equality: . equality OP_EQ relational
+   74         | . equality OP_NE relational
+   75         | . relational
+   76 relational: . relational OP_GT shift
+   77           | . relational OP_LT shift
+   78           | . relational OP_LTE shift
+   79           | . relational OP_GTE shift
+   80           | . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    expr           go to state 116
+    expra          go to state 94
+    equality       go to state 95
+    relational     go to state 96
+    shift          go to state 97
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 79
+
+   53 method_call: ID '(' . opt_call_arg_list ')'
+   56 opt_call_arg_list: . call_arg_list
+   57                  | . %empty  [')']
+   58 call_arg_list: . call_arg_list ',' expr
+   59              | . expr
+   66 lvalue: . ID opt_array
+   69 expr: . expr OP_OR expra
+   70     | . expra
+   71 expra: . expra OP_AND equality
+   72      | . equality
+   73 equality: . equality OP_EQ relational
+   74         | . equality OP_NE relational
+   75         | . relational
+   76 relational: . relational OP_GT shift
+   77           | . relational OP_LT shift
+   78           | . relational OP_LTE shift
+   79           | . relational OP_GTE shift
+   80           | . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    $default  reduce using rule 57 (opt_call_arg_list)
+
+    opt_call_arg_list  go to state 117
+    call_arg_list      go to state 118
+    lvalue             go to state 92
+    expr               go to state 119
+    expra              go to state 94
+    equality           go to state 95
+    relational         go to state 96
+    shift              go to state 97
+    module             go to state 98
+    expras             go to state 99
+    term               go to state 100
+    factor             go to state 101
+    constant           go to state 102
+    bool_constant      go to state 36
+
+
+State 80
+
+   66 lvalue: ID opt_array .
+
+    $default  reduce using rule 66 (lvalue)
+
+
+State 81
+
+   43 statement: KW_BREAK ';' .
+
+    $default  reduce using rule 43 (statement)
+
+
+State 82
+
+   66 lvalue: ID . opt_array
+   67 opt_array: . '[' expr ']'
+   68          | . %empty  [';', '=', ',']
+
+    '['  shift, and go to state 78
+
+    $default  reduce using rule 68 (opt_array)
+
+    opt_array  go to state 80
+
+
+State 83
+
+   55 method_call: KW_READ read_list .  [';']
+   62 read_list: read_list . ',' lvalue
+
+    ','  shift, and go to state 120
+
+    $default  reduce using rule 55 (method_call)
+
+
+State 84
+
+   63 read_list: lvalue .
+
+    $default  reduce using rule 63 (read_list)
+
+
+State 85
+
+   66 lvalue: ID . opt_array
+   67 opt_array: . '[' expr ']'
+   68          | . %empty  [OP_LT, OP_GT, OP_LTE, OP_GTE, OP_NE, OP_EQ, OP_ROT, OP_OR, OP_AND, OP_SHIFT_LEFT, OP_SHIFT_RIGHT, ';', ',', ']', ')', '%', '+', '-', '*', '/']
+   96 factor: ID . '(' opt_call_arg_list ')'
+
+    '['  shift, and go to state 78
+    '('  shift, and go to state 121
+
+    $default  reduce using rule 68 (opt_array)
+
+    opt_array  go to state 80
+
+
+State 86
+
+   64 argument: STRING_CONSTANT .
+
+    $default  reduce using rule 64 (argument)
+
+
+State 87
+
+   66 lvalue: . ID opt_array
+   69 expr: . expr OP_OR expra
+   70     | . expra
+   71 expra: . expra OP_AND equality
+   72      | . equality
+   73 equality: . equality OP_EQ relational
+   74         | . equality OP_NE relational
+   75         | . relational
+   76 relational: . relational OP_GT shift
+   77           | . relational OP_LT shift
+   78           | . relational OP_LTE shift
+   79           | . relational OP_GTE shift
+   80           | . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   98       | '(' . expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    expr           go to state 122
+    expra          go to state 94
+    equality       go to state 95
+    relational     go to state 96
+    shift          go to state 97
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 88
+
+   66 lvalue: . ID opt_array
+   93 factor: . '-' factor
+   93       | '-' . factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    factor         go to state 123
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 89
+
+   66 lvalue: . ID opt_array
+   93 factor: . '-' factor
+   94       | . '!' factor
+   94       | '!' . factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    factor         go to state 124
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 90
+
+   54 method_call: KW_PRINT print_list .  [';']
+   60 print_list: print_list . ',' argument
+
+    ','  shift, and go to state 125
+
+    $default  reduce using rule 54 (method_call)
+
+
+State 91
+
+   61 print_list: argument .
+
+    $default  reduce using rule 61 (print_list)
+
+
+State 92
+
+   95 factor: lvalue .
+
+    $default  reduce using rule 95 (factor)
+
+
+State 93
+
+   65 argument: expr .  [';', ',']
+   69 expr: expr . OP_OR expra
+
+    OP_OR  shift, and go to state 126
+
+    $default  reduce using rule 65 (argument)
+
+
+State 94
+
+   70 expr: expra .  [OP_OR, ';', ',', ']', ')']
+   71 expra: expra . OP_AND equality
+
+    OP_AND  shift, and go to state 127
+
+    $default  reduce using rule 70 (expr)
+
+
+State 95
+
+   72 expra: equality .  [OP_OR, OP_AND, ';', ',', ']', ')']
+   73 equality: equality . OP_EQ relational
+   74         | equality . OP_NE relational
+
+    OP_NE  shift, and go to state 128
+    OP_EQ  shift, and go to state 129
+
+    $default  reduce using rule 72 (expra)
+
+
+State 96
+
+   75 equality: relational .  [OP_NE, OP_EQ, OP_OR, OP_AND, ';', ',', ']', ')']
+   76 relational: relational . OP_GT shift
+   77           | relational . OP_LT shift
+   78           | relational . OP_LTE shift
+   79           | relational . OP_GTE shift
+
+    OP_LT   shift, and go to state 130
+    OP_GT   shift, and go to state 131
+    OP_LTE  shift, and go to state 132
+    OP_GTE  shift, and go to state 133
+
+    $default  reduce using rule 75 (equality)
+
+
+State 97
+
+   80 relational: shift .  [OP_LT, OP_GT, OP_LTE, OP_GTE, OP_NE, OP_EQ, OP_OR, OP_AND, ';', ',', ']', ')']
+   81 shift: shift . OP_SHIFT_RIGHT module
+   82      | shift . OP_SHIFT_LEFT module
+   83      | shift . OP_ROT module
+
+    OP_ROT          shift, and go to state 134
+    OP_SHIFT_LEFT   shift, and go to state 135
+    OP_SHIFT_RIGHT  shift, and go to state 136
+
+    $default  reduce using rule 80 (relational)
+
+
+State 98
+
+   84 shift: module .  [OP_LT, OP_GT, OP_LTE, OP_GTE, OP_NE, OP_EQ, OP_ROT, OP_OR, OP_AND, OP_SHIFT_LEFT, OP_SHIFT_RIGHT, ';', ',', ']', ')']
+   85 module: module . '%' expras
+
+    '%'  shift, and go to state 137
+
+    $default  reduce using rule 84 (shift)
+
+
+State 99
+
+   86 module: expras .  [OP_LT, OP_GT, OP_LTE, OP_GTE, OP_NE, OP_EQ, OP_ROT, OP_OR, OP_AND, OP_SHIFT_LEFT, OP_SHIFT_RIGHT, ';', ',', ']', ')', '%']
+   87 expras: expras . '+' term
+   88       | expras . '-' term
+
+    '+'  shift, and go to state 138
+    '-'  shift, and go to state 139
+
+    $default  reduce using rule 86 (module)
+
+
+State 100
+
+   89 expras: term .  [OP_LT, OP_GT, OP_LTE, OP_GTE, OP_NE, OP_EQ, OP_ROT, OP_OR, OP_AND, OP_SHIFT_LEFT, OP_SHIFT_RIGHT, ';', ',', ']', ')', '%', '+', '-']
+   90 term: term . '*' factor
+   91     | term . '/' factor
+
+    '*'  shift, and go to state 140
+    '/'  shift, and go to state 141
+
+    $default  reduce using rule 89 (expras)
+
+
+State 101
+
+   92 term: factor .
+
+    $default  reduce using rule 92 (term)
+
+
+State 102
+
+   97 factor: constant .
+
+    $default  reduce using rule 97 (factor)
+
+
+State 103
+
+   44 statement: KW_CONTINUE ';' .
+
+    $default  reduce using rule 44 (statement)
+
+
+State 104
+
+   40 statement: KW_WHILE '(' . expr ')' block
+   66 lvalue: . ID opt_array
+   69 expr: . expr OP_OR expra
+   70     | . expra
+   71 expra: . expra OP_AND equality
+   72      | . equality
+   73 equality: . equality OP_EQ relational
+   74         | . equality OP_NE relational
+   75         | . relational
+   76 relational: . relational OP_GT shift
+   77           | . relational OP_LT shift
+   78           | . relational OP_LTE shift
+   79           | . relational OP_GTE shift
+   80           | . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    expr           go to state 142
+    expra          go to state 94
+    equality       go to state 95
+    relational     go to state 96
+    shift          go to state 97
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 105
+
+   41 statement: KW_FOR '(' . assign_list ';' expr ';' assign_list ')' block
+   46 assign_list: . assign_list ',' assign
+   47            | . assign
+   52 assign: . lvalue '=' expr
+   66 lvalue: . ID opt_array
+
+    ID  shift, and go to state 82
+
+    assign_list  go to state 143
+    assign       go to state 144
+    lvalue       go to state 74
+
+
+State 106
+
+   39 statement: KW_IF '(' . expr ')' block opt_else
+   66 lvalue: . ID opt_array
+   69 expr: . expr OP_OR expra
+   70     | . expra
+   71 expra: . expra OP_AND equality
+   72      | . equality
+   73 equality: . equality OP_EQ relational
+   74         | . equality OP_NE relational
+   75         | . relational
+   76 relational: . relational OP_GT shift
+   77           | . relational OP_LT shift
+   78           | . relational OP_LTE shift
+   79           | . relational OP_GTE shift
+   80           | . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    expr           go to state 145
+    expra          go to state 94
+    equality       go to state 95
+    relational     go to state 96
+    shift          go to state 97
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 107
+
+   42 statement: KW_RETURN opt_expr . ';'
+
+    ';'  shift, and go to state 146
+
+
+State 108
+
+   50 opt_expr: expr .  [';']
+   69 expr: expr . OP_OR expra
+
+    OP_OR  shift, and go to state 126
+
+    $default  reduce using rule 50 (opt_expr)
+
+
+State 109
+
+   23 block: '{' opt_var_decl opt_statements '}' .
+
+    $default  reduce using rule 23 (block)
+
+
+State 110
+
+   35 statements: statements statement .
+
+    $default  reduce using rule 35 (statements)
+
+
+State 111
+
+   37 statement: assign ';' .
+
+    $default  reduce using rule 37 (statement)
+
+
+State 112
+
+   38 statement: method_call ';' .
+
+    $default  reduce using rule 38 (statement)
+
+
+State 113
+
+   52 assign: lvalue '=' . expr
+   66 lvalue: . ID opt_array
+   69 expr: . expr OP_OR expra
+   70     | . expra
+   71 expra: . expra OP_AND equality
+   72      | . equality
+   73 equality: . equality OP_EQ relational
+   74         | . equality OP_NE relational
+   75         | . relational
+   76 relational: . relational OP_GT shift
+   77           | . relational OP_LT shift
+   78           | . relational OP_LTE shift
+   79           | . relational OP_GTE shift
+   80           | . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    expr           go to state 147
+    expra          go to state 94
+    equality       go to state 95
+    relational     go to state 96
+    shift          go to state 97
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 114
+
+   28 var_decl: type id_list_local ';' .
+
+    $default  reduce using rule 28 (var_decl)
+
+
+State 115
+
+   29 id_list_local: id_list_local ',' . ID
+
+    ID  shift, and go to state 148
+
+
+State 116
+
+   67 opt_array: '[' expr . ']'
+   69 expr: expr . OP_OR expra
+
+    OP_OR  shift, and go to state 126
+    ']'    shift, and go to state 149
+
+
+State 117
+
+   53 method_call: ID '(' opt_call_arg_list . ')'
+
+    ')'  shift, and go to state 150
+
+
+State 118
+
+   56 opt_call_arg_list: call_arg_list .  [')']
+   58 call_arg_list: call_arg_list . ',' expr
+
+    ','  shift, and go to state 151
+
+    $default  reduce using rule 56 (opt_call_arg_list)
+
+
+State 119
+
+   59 call_arg_list: expr .  [',', ')']
+   69 expr: expr . OP_OR expra
+
+    OP_OR  shift, and go to state 126
+
+    $default  reduce using rule 59 (call_arg_list)
+
+
+State 120
+
+   62 read_list: read_list ',' . lvalue
+   66 lvalue: . ID opt_array
+
+    ID  shift, and go to state 82
+
+    lvalue  go to state 152
+
+
+State 121
+
+   56 opt_call_arg_list: . call_arg_list
+   57                  | . %empty  [')']
+   58 call_arg_list: . call_arg_list ',' expr
+   59              | . expr
+   66 lvalue: . ID opt_array
+   69 expr: . expr OP_OR expra
+   70     | . expra
+   71 expra: . expra OP_AND equality
+   72      | . equality
+   73 equality: . equality OP_EQ relational
+   74         | . equality OP_NE relational
+   75         | . relational
+   76 relational: . relational OP_GT shift
+   77           | . relational OP_LT shift
+   78           | . relational OP_LTE shift
+   79           | . relational OP_GTE shift
+   80           | . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   96       | ID '(' . opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    $default  reduce using rule 57 (opt_call_arg_list)
+
+    opt_call_arg_list  go to state 153
+    call_arg_list      go to state 118
+    lvalue             go to state 92
+    expr               go to state 119
+    expra              go to state 94
+    equality           go to state 95
+    relational         go to state 96
+    shift              go to state 97
+    module             go to state 98
+    expras             go to state 99
+    term               go to state 100
+    factor             go to state 101
+    constant           go to state 102
+    bool_constant      go to state 36
+
+
+State 122
+
+   69 expr: expr . OP_OR expra
+   98 factor: '(' expr . ')'
+
+    OP_OR  shift, and go to state 126
+    ')'    shift, and go to state 154
+
+
+State 123
+
+   93 factor: '-' factor .
+
+    $default  reduce using rule 93 (factor)
+
+
+State 124
+
+   94 factor: '!' factor .
+
+    $default  reduce using rule 94 (factor)
+
+
+State 125
+
+   60 print_list: print_list ',' . argument
+   64 argument: . STRING_CONSTANT
+   65         | . expr
+   66 lvalue: . ID opt_array
+   69 expr: . expr OP_OR expra
+   70     | . expra
+   71 expra: . expra OP_AND equality
+   72      | . equality
+   73 equality: . equality OP_EQ relational
+   74         | . equality OP_NE relational
+   75         | . relational
+   76 relational: . relational OP_GT shift
+   77           | . relational OP_LT shift
+   78           | . relational OP_LTE shift
+   79           | . relational OP_GTE shift
+   80           | . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT     shift, and go to state 31
+    CHAR_CONSTANT    shift, and go to state 32
+    ID               shift, and go to state 85
+    STRING_CONSTANT  shift, and go to state 86
+    KW_TRUE          shift, and go to state 33
+    KW_FALSE         shift, and go to state 34
+    '('              shift, and go to state 87
+    '-'              shift, and go to state 88
+    '!'              shift, and go to state 89
+
+    argument       go to state 155
+    lvalue         go to state 92
+    expr           go to state 93
+    expra          go to state 94
+    equality       go to state 95
+    relational     go to state 96
+    shift          go to state 97
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 126
+
+   66 lvalue: . ID opt_array
+   69 expr: expr OP_OR . expra
+   71 expra: . expra OP_AND equality
+   72      | . equality
+   73 equality: . equality OP_EQ relational
+   74         | . equality OP_NE relational
+   75         | . relational
+   76 relational: . relational OP_GT shift
+   77           | . relational OP_LT shift
+   78           | . relational OP_LTE shift
+   79           | . relational OP_GTE shift
+   80           | . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    expra          go to state 156
+    equality       go to state 95
+    relational     go to state 96
+    shift          go to state 97
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 127
+
+   66 lvalue: . ID opt_array
+   71 expra: expra OP_AND . equality
+   73 equality: . equality OP_EQ relational
+   74         | . equality OP_NE relational
+   75         | . relational
+   76 relational: . relational OP_GT shift
+   77           | . relational OP_LT shift
+   78           | . relational OP_LTE shift
+   79           | . relational OP_GTE shift
+   80           | . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    equality       go to state 157
+    relational     go to state 96
+    shift          go to state 97
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 128
+
+   66 lvalue: . ID opt_array
+   74 equality: equality OP_NE . relational
+   76 relational: . relational OP_GT shift
+   77           | . relational OP_LT shift
+   78           | . relational OP_LTE shift
+   79           | . relational OP_GTE shift
+   80           | . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    relational     go to state 158
+    shift          go to state 97
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 129
+
+   66 lvalue: . ID opt_array
+   73 equality: equality OP_EQ . relational
+   76 relational: . relational OP_GT shift
+   77           | . relational OP_LT shift
+   78           | . relational OP_LTE shift
+   79           | . relational OP_GTE shift
+   80           | . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    relational     go to state 159
+    shift          go to state 97
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 130
+
+   66 lvalue: . ID opt_array
+   77 relational: relational OP_LT . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    shift          go to state 160
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 131
+
+   66 lvalue: . ID opt_array
+   76 relational: relational OP_GT . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    shift          go to state 161
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 132
+
+   66 lvalue: . ID opt_array
+   78 relational: relational OP_LTE . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    shift          go to state 162
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 133
+
+   66 lvalue: . ID opt_array
+   79 relational: relational OP_GTE . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    shift          go to state 163
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 134
+
+   66 lvalue: . ID opt_array
+   83 shift: shift OP_ROT . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    module         go to state 164
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 135
+
+   66 lvalue: . ID opt_array
+   82 shift: shift OP_SHIFT_LEFT . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    module         go to state 165
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 136
+
+   66 lvalue: . ID opt_array
+   81 shift: shift OP_SHIFT_RIGHT . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    module         go to state 166
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 137
+
+   66 lvalue: . ID opt_array
+   85 module: module '%' . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    expras         go to state 167
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 138
+
+   66 lvalue: . ID opt_array
+   87 expras: expras '+' . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    term           go to state 168
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 139
+
+   66 lvalue: . ID opt_array
+   88 expras: expras '-' . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    term           go to state 169
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 140
+
+   66 lvalue: . ID opt_array
+   90 term: term '*' . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    factor         go to state 170
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 141
+
+   66 lvalue: . ID opt_array
+   91 term: term '/' . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    factor         go to state 171
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 142
+
+   40 statement: KW_WHILE '(' expr . ')' block
+   69 expr: expr . OP_OR expra
+
+    OP_OR  shift, and go to state 126
+    ')'    shift, and go to state 172
+
+
+State 143
+
+   41 statement: KW_FOR '(' assign_list . ';' expr ';' assign_list ')' block
+   46 assign_list: assign_list . ',' assign
+
+    ';'  shift, and go to state 173
+    ','  shift, and go to state 174
+
+
+State 144
+
+   47 assign_list: assign .
+
+    $default  reduce using rule 47 (assign_list)
+
+
+State 145
+
+   39 statement: KW_IF '(' expr . ')' block opt_else
+   69 expr: expr . OP_OR expra
+
+    OP_OR  shift, and go to state 126
+    ')'    shift, and go to state 175
+
+
+State 146
+
+   42 statement: KW_RETURN opt_expr ';' .
+
+    $default  reduce using rule 42 (statement)
+
+
+State 147
+
+   52 assign: lvalue '=' expr .  [';', ',', ')']
+   69 expr: expr . OP_OR expra
+
+    OP_OR  shift, and go to state 126
+
+    $default  reduce using rule 52 (assign)
+
+
+State 148
+
+   29 id_list_local: id_list_local ',' ID .
+
+    $default  reduce using rule 29 (id_list_local)
+
+
+State 149
+
+   67 opt_array: '[' expr ']' .
+
+    $default  reduce using rule 67 (opt_array)
+
+
+State 150
+
+   53 method_call: ID '(' opt_call_arg_list ')' .
+
+    $default  reduce using rule 53 (method_call)
+
+
+State 151
+
+   58 call_arg_list: call_arg_list ',' . expr
+   66 lvalue: . ID opt_array
+   69 expr: . expr OP_OR expra
+   70     | . expra
+   71 expra: . expra OP_AND equality
+   72      | . equality
+   73 equality: . equality OP_EQ relational
+   74         | . equality OP_NE relational
+   75         | . relational
+   76 relational: . relational OP_GT shift
+   77           | . relational OP_LT shift
+   78           | . relational OP_LTE shift
+   79           | . relational OP_GTE shift
+   80           | . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    expr           go to state 176
+    expra          go to state 94
+    equality       go to state 95
+    relational     go to state 96
+    shift          go to state 97
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 152
+
+   62 read_list: read_list ',' lvalue .
+
+    $default  reduce using rule 62 (read_list)
+
+
+State 153
+
+   96 factor: ID '(' opt_call_arg_list . ')'
+
+    ')'  shift, and go to state 177
+
+
+State 154
+
+   98 factor: '(' expr ')' .
+
+    $default  reduce using rule 98 (factor)
+
+
+State 155
+
+   60 print_list: print_list ',' argument .
+
+    $default  reduce using rule 60 (print_list)
+
+
+State 156
+
+   69 expr: expr OP_OR expra .  [OP_OR, ';', ',', ']', ')']
+   71 expra: expra . OP_AND equality
+
+    OP_AND  shift, and go to state 127
+
+    $default  reduce using rule 69 (expr)
+
+
+State 157
+
+   71 expra: expra OP_AND equality .  [OP_OR, OP_AND, ';', ',', ']', ')']
+   73 equality: equality . OP_EQ relational
+   74         | equality . OP_NE relational
+
+    OP_NE  shift, and go to state 128
+    OP_EQ  shift, and go to state 129
+
+    $default  reduce using rule 71 (expra)
+
+
+State 158
+
+   74 equality: equality OP_NE relational .  [OP_NE, OP_EQ, OP_OR, OP_AND, ';', ',', ']', ')']
+   76 relational: relational . OP_GT shift
+   77           | relational . OP_LT shift
+   78           | relational . OP_LTE shift
+   79           | relational . OP_GTE shift
+
+    OP_LT   shift, and go to state 130
+    OP_GT   shift, and go to state 131
+    OP_LTE  shift, and go to state 132
+    OP_GTE  shift, and go to state 133
+
+    $default  reduce using rule 74 (equality)
+
+
+State 159
+
+   73 equality: equality OP_EQ relational .  [OP_NE, OP_EQ, OP_OR, OP_AND, ';', ',', ']', ')']
+   76 relational: relational . OP_GT shift
+   77           | relational . OP_LT shift
+   78           | relational . OP_LTE shift
+   79           | relational . OP_GTE shift
+
+    OP_LT   shift, and go to state 130
+    OP_GT   shift, and go to state 131
+    OP_LTE  shift, and go to state 132
+    OP_GTE  shift, and go to state 133
+
+    $default  reduce using rule 73 (equality)
+
+
+State 160
+
+   77 relational: relational OP_LT shift .  [OP_LT, OP_GT, OP_LTE, OP_GTE, OP_NE, OP_EQ, OP_OR, OP_AND, ';', ',', ']', ')']
+   81 shift: shift . OP_SHIFT_RIGHT module
+   82      | shift . OP_SHIFT_LEFT module
+   83      | shift . OP_ROT module
+
+    OP_ROT          shift, and go to state 134
+    OP_SHIFT_LEFT   shift, and go to state 135
+    OP_SHIFT_RIGHT  shift, and go to state 136
+
+    $default  reduce using rule 77 (relational)
+
+
+State 161
+
+   76 relational: relational OP_GT shift .  [OP_LT, OP_GT, OP_LTE, OP_GTE, OP_NE, OP_EQ, OP_OR, OP_AND, ';', ',', ']', ')']
+   81 shift: shift . OP_SHIFT_RIGHT module
+   82      | shift . OP_SHIFT_LEFT module
+   83      | shift . OP_ROT module
+
+    OP_ROT          shift, and go to state 134
+    OP_SHIFT_LEFT   shift, and go to state 135
+    OP_SHIFT_RIGHT  shift, and go to state 136
+
+    $default  reduce using rule 76 (relational)
+
+
+State 162
+
+   78 relational: relational OP_LTE shift .  [OP_LT, OP_GT, OP_LTE, OP_GTE, OP_NE, OP_EQ, OP_OR, OP_AND, ';', ',', ']', ')']
+   81 shift: shift . OP_SHIFT_RIGHT module
+   82      | shift . OP_SHIFT_LEFT module
+   83      | shift . OP_ROT module
+
+    OP_ROT          shift, and go to state 134
+    OP_SHIFT_LEFT   shift, and go to state 135
+    OP_SHIFT_RIGHT  shift, and go to state 136
+
+    $default  reduce using rule 78 (relational)
+
+
+State 163
+
+   79 relational: relational OP_GTE shift .  [OP_LT, OP_GT, OP_LTE, OP_GTE, OP_NE, OP_EQ, OP_OR, OP_AND, ';', ',', ']', ')']
+   81 shift: shift . OP_SHIFT_RIGHT module
+   82      | shift . OP_SHIFT_LEFT module
+   83      | shift . OP_ROT module
+
+    OP_ROT          shift, and go to state 134
+    OP_SHIFT_LEFT   shift, and go to state 135
+    OP_SHIFT_RIGHT  shift, and go to state 136
+
+    $default  reduce using rule 79 (relational)
+
+
+State 164
+
+   83 shift: shift OP_ROT module .  [OP_LT, OP_GT, OP_LTE, OP_GTE, OP_NE, OP_EQ, OP_ROT, OP_OR, OP_AND, OP_SHIFT_LEFT, OP_SHIFT_RIGHT, ';', ',', ']', ')']
+   85 module: module . '%' expras
+
+    '%'  shift, and go to state 137
+
+    $default  reduce using rule 83 (shift)
+
+
+State 165
+
+   82 shift: shift OP_SHIFT_LEFT module .  [OP_LT, OP_GT, OP_LTE, OP_GTE, OP_NE, OP_EQ, OP_ROT, OP_OR, OP_AND, OP_SHIFT_LEFT, OP_SHIFT_RIGHT, ';', ',', ']', ')']
+   85 module: module . '%' expras
+
+    '%'  shift, and go to state 137
+
+    $default  reduce using rule 82 (shift)
+
+
+State 166
+
+   81 shift: shift OP_SHIFT_RIGHT module .  [OP_LT, OP_GT, OP_LTE, OP_GTE, OP_NE, OP_EQ, OP_ROT, OP_OR, OP_AND, OP_SHIFT_LEFT, OP_SHIFT_RIGHT, ';', ',', ']', ')']
+   85 module: module . '%' expras
+
+    '%'  shift, and go to state 137
+
+    $default  reduce using rule 81 (shift)
+
+
+State 167
+
+   85 module: module '%' expras .  [OP_LT, OP_GT, OP_LTE, OP_GTE, OP_NE, OP_EQ, OP_ROT, OP_OR, OP_AND, OP_SHIFT_LEFT, OP_SHIFT_RIGHT, ';', ',', ']', ')', '%']
+   87 expras: expras . '+' term
+   88       | expras . '-' term
+
+    '+'  shift, and go to state 138
+    '-'  shift, and go to state 139
+
+    $default  reduce using rule 85 (module)
+
+
+State 168
+
+   87 expras: expras '+' term .  [OP_LT, OP_GT, OP_LTE, OP_GTE, OP_NE, OP_EQ, OP_ROT, OP_OR, OP_AND, OP_SHIFT_LEFT, OP_SHIFT_RIGHT, ';', ',', ']', ')', '%', '+', '-']
+   90 term: term . '*' factor
+   91     | term . '/' factor
+
+    '*'  shift, and go to state 140
+    '/'  shift, and go to state 141
+
+    $default  reduce using rule 87 (expras)
+
+
+State 169
+
+   88 expras: expras '-' term .  [OP_LT, OP_GT, OP_LTE, OP_GTE, OP_NE, OP_EQ, OP_ROT, OP_OR, OP_AND, OP_SHIFT_LEFT, OP_SHIFT_RIGHT, ';', ',', ']', ')', '%', '+', '-']
+   90 term: term . '*' factor
+   91     | term . '/' factor
+
+    '*'  shift, and go to state 140
+    '/'  shift, and go to state 141
+
+    $default  reduce using rule 88 (expras)
+
+
+State 170
+
+   90 term: term '*' factor .
+
+    $default  reduce using rule 90 (term)
+
+
+State 171
+
+   91 term: term '/' factor .
+
+    $default  reduce using rule 91 (term)
+
+
+State 172
+
+   23 block: . '{' opt_var_decl opt_statements '}'
+   40 statement: KW_WHILE '(' expr ')' . block
+
+    '{'  shift, and go to state 51
+
+    block  go to state 178
+
+
+State 173
+
+   41 statement: KW_FOR '(' assign_list ';' . expr ';' assign_list ')' block
+   66 lvalue: . ID opt_array
+   69 expr: . expr OP_OR expra
+   70     | . expra
+   71 expra: . expra OP_AND equality
+   72      | . equality
+   73 equality: . equality OP_EQ relational
+   74         | . equality OP_NE relational
+   75         | . relational
+   76 relational: . relational OP_GT shift
+   77           | . relational OP_LT shift
+   78           | . relational OP_LTE shift
+   79           | . relational OP_GTE shift
+   80           | . shift
+   81 shift: . shift OP_SHIFT_RIGHT module
+   82      | . shift OP_SHIFT_LEFT module
+   83      | . shift OP_ROT module
+   84      | . module
+   85 module: . module '%' expras
+   86       | . expras
+   87 expras: . expras '+' term
+   88       | . expras '-' term
+   89       | . term
+   90 term: . term '*' factor
+   91     | . term '/' factor
+   92     | . factor
+   93 factor: . '-' factor
+   94       | . '!' factor
+   95       | . lvalue
+   96       | . ID '(' opt_call_arg_list ')'
+   97       | . constant
+   98       | . '(' expr ')'
+   99 constant: . INT_CONSTANT
+  100         | . CHAR_CONSTANT
+  101         | . bool_constant
+  102 bool_constant: . KW_TRUE
+  103              | . KW_FALSE
+
+    INT_CONSTANT   shift, and go to state 31
+    CHAR_CONSTANT  shift, and go to state 32
+    ID             shift, and go to state 85
+    KW_TRUE        shift, and go to state 33
+    KW_FALSE       shift, and go to state 34
+    '('            shift, and go to state 87
+    '-'            shift, and go to state 88
+    '!'            shift, and go to state 89
+
+    lvalue         go to state 92
+    expr           go to state 179
+    expra          go to state 94
+    equality       go to state 95
+    relational     go to state 96
+    shift          go to state 97
+    module         go to state 98
+    expras         go to state 99
+    term           go to state 100
+    factor         go to state 101
+    constant       go to state 102
+    bool_constant  go to state 36
+
+
+State 174
+
+   46 assign_list: assign_list ',' . assign
+   52 assign: . lvalue '=' expr
+   66 lvalue: . ID opt_array
+
+    ID  shift, and go to state 82
+
+    assign  go to state 180
+    lvalue  go to state 74
+
+
+State 175
+
+   23 block: . '{' opt_var_decl opt_statements '}'
+   39 statement: KW_IF '(' expr ')' . block opt_else
+
+    '{'  shift, and go to state 51
+
+    block  go to state 181
+
+
+State 176
+
+   58 call_arg_list: call_arg_list ',' expr .  [',', ')']
+   69 expr: expr . OP_OR expra
+
+    OP_OR  shift, and go to state 126
+
+    $default  reduce using rule 58 (call_arg_list)
+
+
+State 177
+
+   96 factor: ID '(' opt_call_arg_list ')' .
+
+    $default  reduce using rule 96 (factor)
+
+
+State 178
+
+   40 statement: KW_WHILE '(' expr ')' block .
+
+    $default  reduce using rule 40 (statement)
+
+
+State 179
+
+   41 statement: KW_FOR '(' assign_list ';' expr . ';' assign_list ')' block
+   69 expr: expr . OP_OR expra
+
+    OP_OR  shift, and go to state 126
+    ';'    shift, and go to state 182
+
+
+State 180
+
+   46 assign_list: assign_list ',' assign .
+
+    $default  reduce using rule 46 (assign_list)
+
+
+State 181
+
+   39 statement: KW_IF '(' expr ')' block . opt_else
+   48 opt_else: . KW_ELSE block
+   49         | . %empty  [ID, KW_BREAK, KW_READ, KW_PRINT, KW_CONTINUE, KW_WHILE, KW_FOR, KW_IF, KW_RETURN, '{', '}']
+
+    KW_ELSE  shift, and go to state 183
+
+    $default  reduce using rule 49 (opt_else)
+
+    opt_else  go to state 184
+
+
+State 182
+
+   41 statement: KW_FOR '(' assign_list ';' expr ';' . assign_list ')' block
+   46 assign_list: . assign_list ',' assign
+   47            | . assign
+   52 assign: . lvalue '=' expr
+   66 lvalue: . ID opt_array
+
+    ID  shift, and go to state 82
+
+    assign_list  go to state 185
+    assign       go to state 144
+    lvalue       go to state 74
+
+
+State 183
+
+   23 block: . '{' opt_var_decl opt_statements '}'
+   48 opt_else: KW_ELSE . block
+
+    '{'  shift, and go to state 51
+
+    block  go to state 186
+
+
+State 184
+
+   39 statement: KW_IF '(' expr ')' block opt_else .
+
+    $default  reduce using rule 39 (statement)
+
+
+State 185
+
+   41 statement: KW_FOR '(' assign_list ';' expr ';' assign_list . ')' block
+   46 assign_list: assign_list . ',' assign
+
+    ','  shift, and go to state 174
+    ')'  shift, and go to state 187
+
+
+State 186
+
+   48 opt_else: KW_ELSE block .
+
+    $default  reduce using rule 48 (opt_else)
+
+
+State 187
+
+   23 block: . '{' opt_var_decl opt_statements '}'
+   41 statement: KW_FOR '(' assign_list ';' expr ';' assign_list ')' . block
+
+    '{'  shift, and go to state 51
+
+    block  go to state 188
+
+
+State 188
+
+   41 statement: KW_FOR '(' assign_list ';' expr ';' assign_list ')' block .
+
+    $default  reduce using rule 41 (statement)

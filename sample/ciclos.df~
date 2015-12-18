@@ -1,0 +1,23 @@
+class Ciclos
+{
+	int i,I;
+	void main()
+	{
+		callWhile();
+		for(i=5,I=0; i>=0 && I<=4 ; i=i-1,I=I+1)
+		{
+			print i,I;
+                }
+	}
+
+	void callWhile()
+	{
+		int i;
+		i=0;
+		while(i<5)
+		{
+			print i*i;
+			i=i+1;
+		}
+	}
+}
